@@ -24,23 +24,10 @@ namespace Presentacion.Escritorio
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            var nombresDeAlumnos = this.db
-                                        .Alumnos
-                                        .Where(x => x.Nombre.Contains("a"))
-                                        .Select(x => new {
-                                            AlumnoId = x.Id,
-                                            LongitudDelNombre = x.Nombre.Length
-                                        })
-                                        .Join(db.Profesores,
-                                              alumno => alumno.AlumnoId,
-                                              profesor => profesor.Id,
-                                              (alumno,profesor)=>new {
-                                                  AlumnoId = alumno.AlumnoId,
-                                                  LongitudDelNombre = alumno.LongitudDelNombre,
-                                                  nombreProfesor = profesor.Nombre
-                                              })
-                                        .OrderByDescending(x => x.AlumnoId)
-                                        .ToList();
+            this.db.Alumnos.ToList().ForEach(x =>
+            {
+                comboBox1.Items.Add(x);
+            });
 
 
             this.AlumnosCargados = db.Alumnos.ToList();
@@ -89,6 +76,15 @@ namespace Presentacion.Escritorio
             this.AlumnosCargados.Remove(alumnoABorrar);
             this.actualizarTablaDeAlumnos();
 
+        }
+
+        private void comboBox1_SelectedValueChanged(object sender, EventArgs e)
+        {
+            var value = (Alumno)comboBox1.SelectedItem;
+            if (value != null)
+            {
+
+            }
         }
     }
 }
